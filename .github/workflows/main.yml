@@ -1,0 +1,28 @@
+name: Checkmarx One Scan
+on:
+  pull_request:
+  push:
+    branches:
+        - main
+        - master
+env:
+ # platforms: Dockerfile
+  scanTypes: iac-security,sast,sca
+  threshold: iac-security-high=1=,iac-security-medium=1,iac-securitylow=1    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkmarx One CLI Action
+        uses: checkmarx/ast-github-action@main
+        with:
+          project_name: Margarita_ManualScan2_new1
+          cx_tenant: Cx_Seg
+          base_uri: https://eu.ast.checkmarx.net
+          cx_client_id: ${{ secrets.CLIENT_ID }}
+          cx_client_secret: ${{ secrets.SECRET }}
+          additional_params: --debug
+    #      additional_params: --scan-types ${{ env.scanTypes }} --file-filter "!src/, !.git/, !*.java, !*.iml, !*.json, !*.jar" --debug
+         
